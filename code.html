@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加密解密工具（汉字版）</title>
+
+    <!-- 引入 Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- 自定义 CSS 样式 -->
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #f2f2f2, #e6e6e6);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #4A90E2;
+        }
+        label {
+            font-size: 18px;
+            color: #333;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4A90E2;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #357ABD;
+        }
+        form {
+            width: 100%;
+            max-width: 500px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .result {
+            font-size: 18px;
+            color: #555;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        .result p {
+            margin: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+        }
+        .emoji {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>加密解密工具（汉字版）</h1>
+
+        <!-- 加密部分 -->
+        <h2>加密</h2>
+        <form id="encrypt-form">
+            <label for="encrypt-message">请输入要加密的文本 (支持汉字):</label>
+            <input type="text" id="encrypt-message" name="message">
+            <button type="submit">加密</button>
+        </form>
+        <h3>加密结果:</h3>
+        <div class="result" id="encrypted-result">
+            <span class="emoji">😊</span> <span id="encrypt-message-result">请输入文本加密</span>
+        </div>
+
+        <!-- 解密部分 -->
+        <h2>解密</h2>
+        <form id="decrypt-form">
+            <label for="decrypt-message">请输入加密的文本:</label>
+            <input type="text" id="decrypt-message" name="message">
+            <button type="submit">解密</button>
+        </form>
+        <h3>解密结果:</h3>
+        <div class="result" id="decrypted-result">
+            <span class="emoji">😜</span> <span id="decrypt-message-result">请输入加密的文本进行解密</span>
+        </div>
+    </div>
+
+    <script>
+        // 加密和解密的偏移量（可以调整这个数值来改变加密效果）
+        const OFFSET = 1000;
+
+        // 加密函数：将字符转换为其 Unicode 编码并加上一个偏移量
+        function encryptMessage(text) {
+            return text.split('').map(char => {
+                let unicode = char.charCodeAt(0);  // 获取字符的 Unicode 编码
+                return String.fromCharCode(unicode + OFFSET);  // 偏移并转换为新的字符
+            }).join('');
+        }
+
+        // 解密函数：将字符转换为其 Unicode 编码并减去相同的偏移量
+        function decryptMessage(encryptedText) {
+            return encryptedText.split('').map(char => {
+                let unicode = char.charCodeAt(0);  // 获取字符的 Unicode 编码
+                return String.fromCharCode(unicode - OFFSET);  // 恢复原字符
+            }).join('');
+        }
+
+        // 加密表单提交
+        document.getElementById('encrypt-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            let message = document.getElementById('encrypt-message').value;
+            let encryptedMessage = encryptMessage(message);
+            document.getElementById('encrypted-result').innerHTML = `<span class="emoji">😁</span> ${encryptedMessage}`;
+        });
+
+        // 解密表单提交
+        document.getElementById('decrypt-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            let encryptedMessage = document.getElementById('decrypt-message').value;
+            let decryptedMessage = decryptMessage(encryptedMessage);
+            document.getElementById('decrypted-result').innerHTML = `<span class="emoji">😄</span> ${decryptedMessage}`;
+        });
+    </script>
+</body>
+</html>
