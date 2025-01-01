@@ -3,38 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>加密解密工具（汉字版）</title>
+    <title>汉字粒子加密解密工具</title>
 
     <!-- 引入 Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=KaiTi&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     
+    <!-- 引入 tsparticles -->
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@1.38.0/tsparticles.min.js"></script>
+
     <!-- 自定义 CSS 样式 -->
     <style>
         body {
-            font-family: 'Noto Sans SC', sans-serif;
-            background: linear-gradient(135deg, #f2f2f2, #e6e6e6);
+            font-family: 'KaiTi', 'Noto Sans SC', sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            background: linear-gradient(135deg, #ffffff, #81d4fa, #4fc3f7);
+            background-size: 300% 300%;
+            animation: gradientAnimation 3s ease infinite;
         }
+
+        #particles-js {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh; /* 使用视口高度 */
+            z-index: -1;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         h1, h2, h3 {
             color: #333;
-        }
-        h1 {
             text-align: center;
-            font-size: 36px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* 增加阴影效果 */
+        }
+
+        h1 {
+            font-size: 42px;
             margin-bottom: 20px;
         }
+
         h2 {
+            font-size: 28px;
             color: #4A90E2;
+            margin-top: 20px;
         }
+
         label {
             font-size: 18px;
             color: #333;
         }
+
         input[type="text"] {
             width: 100%;
             padding: 12px;
@@ -43,6 +71,7 @@
             border: 1px solid #ccc;
             font-size: 16px;
         }
+
         button {
             background-color: #4A90E2;
             color: white;
@@ -53,17 +82,20 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+
         button:hover {
             background-color: #357ABD;
         }
+
         form {
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
             background-color: white;
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
+
         .result {
             font-size: 18px;
             color: #555;
@@ -72,22 +104,27 @@
             border-radius: 8px;
             margin-top: 15px;
         }
+
         .result p {
             margin: 0;
         }
+
         .container {
             width: 100%;
             max-width: 600px;
             padding: 20px;
         }
+
         .emoji {
             font-size: 24px;
         }
     </style>
 </head>
 <body>
+    <div id="particles-js"></div>
+
     <div class="container">
-        <h1>加密解密工具（汉字版）</h1>
+        <h1>加密解密工具</h1>
 
         <!-- 加密部分 -->
         <h2>加密</h2>
@@ -98,7 +135,7 @@
         </form>
         <h3>加密结果:</h3>
         <div class="result" id="encrypted-result">
-            <span class="emoji">😊</span> <span id="encrypt-message-result">请输入文本加密</span>
+            <span class="emoji">😊</span> <span id="encrypt-message-result">加密结果</span>
         </div>
 
         <!-- 解密部分 -->
@@ -110,15 +147,69 @@
         </form>
         <h3>解密结果:</h3>
         <div class="result" id="decrypted-result">
-            <span class="emoji">😜</span> <span id="decrypt-message-result">请输入加密的文本进行解密</span>
+            <span class="emoji">😜</span> <span id="decrypt-message-result">解密结果</span>
         </div>
     </div>
 
     <script>
+        // 初始化粒子背景
+        tsParticles.load("particles-js", {
+            particles: {
+                number: {
+                    value: 100, // 粒子数量
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                shape: {
+                    type: "char", // 将粒子形状改为字符
+                    character: {
+                        value: ["汉", "字", "云", "安", "全","历","史","文","化","讠","刂","亻","廴","勹","冫","匚","卩","阝","丷","冖","厶"], // 替换成你想要的汉字
+                        font: "KaiTi", // 使用字体
+                        style: "",
+                        weight: "bold" // 字重
+                    }
+                },
+                size: {
+                    value: 20, // 汉字大小
+                    random: true // 随机大小
+                },
+                opacity: {
+                    value: 0.8, // 汉字透明度
+                    random: true
+                },
+                color: {
+                    value: ["#1e3a8a", "#3b82f6", "#2563eb", "#1d4ed8"] // 蓝色系
+                },
+                move: {
+                    enable: true,
+                    speed: 3, // 运动速度
+                    direction: "none", // 运动方向
+                    random: true,
+                    straight: false,
+                    out_mode: "out", // 移出屏幕后重新出现
+                    bounce: false
+                }
+            },
+            interactivity: {
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "repulse" // 鼠标悬停时粒子会反向
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push" // 鼠标点击时生成更多粒子
+                    }
+                }
+            }
+        });
+
         // 加密和解密的偏移量（可以调整这个数值来改变加密效果）
         const OFFSET = 1000;
 
-        // 加密函数：将字符转换为其 Unicode 编码并加上一个偏移量
+        // 加密函数
         function encryptMessage(text) {
             return text.split('').map(char => {
                 let unicode = char.charCodeAt(0);  // 获取字符的 Unicode 编码
@@ -126,7 +217,7 @@
             }).join('');
         }
 
-        // 解密函数：将字符转换为其 Unicode 编码并减去相同的偏移量
+        // 解密函数
         function decryptMessage(encryptedText) {
             return encryptedText.split('').map(char => {
                 let unicode = char.charCodeAt(0);  // 获取字符的 Unicode 编码
