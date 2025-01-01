@@ -126,7 +126,7 @@ https://yokusam.github.io/my-encryption-webpage/
 
 另外在最后也把最终调整完后使用的代码放一下：
 
-```JavaScript 
+```html
 
 <!DOCTYPE html>
 <html lang="zh">
