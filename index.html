@@ -1,38 +1,32 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>汉字粒子加密解密工具</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>篆刻密码 | 非遗数字化交互之加解密</title>
 
-    <!-- 引入 Google Fonts -->
+    <!-- 引入 Google Fonts 备用字体 -->
     <link href="https://fonts.googleapis.com/css2?family=KaiTi&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- 引入 tsparticles -->
+    <!-- tsparticles 粒子背景 -->
     <script src="https://cdn.jsdelivr.net/npm/tsparticles@1.38.0/tsparticles.min.js"></script>
 
-    <!-- 自定义 CSS 样式 -->
     <style>
+        @font-face {
+            font-family: 'ZhuanTi';
+            src: url('./fonts/YiShanBeiZhuanTi.ttf') format('truetype');
+        }
+
         body {
-            font-family: 'KaiTi', 'Noto Sans SC', sans-serif;
+            font-family: 'Noto Sans SC', 'KaiTi', sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #ffffff, #81d4fa, #4fc3f7);
+            background: linear-gradient(135deg, #2d1a14, #5a1c1c, #a52a2a);
             background-size: 300% 300%;
-            animation: gradientAnimation 3s ease infinite;
-        }
-
-        #particles-js {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh; /* 使用视口高度 */
-            z-index: -1;
+            animation: gradientAnimation 6s ease infinite;
         }
 
         @keyframes gradientAnimation {
@@ -41,27 +35,42 @@
             100% { background-position: 0% 50%; }
         }
 
-        h1, h2, h3 {
-            color: #333;
-            text-align: center;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* 增加阴影效果 */
+        #particles-js {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
         }
 
         h1 {
-            font-size: 42px;
+            font-family: 'ZhuanTi', serif;
+            font-size: 48px;
+            text-align: center;
+            color: #d69b64;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
             margin-bottom: 20px;
         }
 
         h2 {
             font-size: 28px;
-            color: #4A90E2;
-            margin-top: 20px;
+            color: #c43a2f;
+            text-align: center;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: #f5deb3;
+            text-align: center;
         }
 
         label {
             font-size: 18px;
-            color: #333;
+            color: #6e2c26; 
+            font-weight: 500;
         }
+
 
         input[type="text"] {
             width: 100%;
@@ -70,10 +79,13 @@
             border-radius: 8px;
             border: 1px solid #ccc;
             font-size: 16px;
+            background-color: #fffaf3;
+            color: #333;
         }
 
         button {
-            background-color: #4A90E2;
+            font-family: 'ZhuanTi', serif;
+            background-color: #a12525;
             color: white;
             padding: 12px 20px;
             border: none;
@@ -83,37 +95,47 @@
             transition: background-color 0.3s ease;
         }
 
+
         button:hover {
-            background-color: #357ABD;
+            background-color: #751818;
         }
 
         form {
             width: 100%;
             max-width: 600px;
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.95);
             padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .result {
-            font-size: 18px;
-            color: #555;
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-        }
-
-        .result p {
-            margin: 0;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         }
 
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 640px;
             padding: 20px;
         }
+
+        .result {
+            font-size: 24px;
+            background: #fff3f0;
+            border: 3px solid #b71c1c;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            box-shadow: 0 0 6px rgba(183, 28, 28, 0.5);
+            text-align: center;
+        }
+
+        .result.encrypt {
+            font-family: 'ZhuanTi', serif;
+            color: #b71c1c;
+        }
+
+        .result.decrypt {
+            font-family: 'Noto Sans SC', 'KaiTi', sans-serif;
+            color: #333;
+        }
+
 
         .emoji {
             font-size: 24px;
@@ -124,121 +146,104 @@
     <div id="particles-js"></div>
 
     <div class="container">
-        <h1>加密解密工具</h1>
+        <h1>篆刻密码加解密工具</h1>
 
-        <!-- 加密部分 -->
         <h2>加密</h2>
         <form id="encrypt-form">
-            <label for="encrypt-message">请输入要加密的文本 (支持汉字):</label>
-            <input type="text" id="encrypt-message" name="message">
+            <label for="encrypt-message">请输入要加密的文本 (中文):</label>
+            <input type="text" id="encrypt-message" name="message" />
             <button type="submit">加密</button>
         </form>
-        <h3>加密结果:</h3>
-        <div class="result" id="encrypted-result">
-            <span class="emoji">😊</span> <span id="encrypt-message-result">加密结果</span>
+        <h3>加密结果</h3>
+        <div class="result encrypt" id="encrypted-result">
+            <span class="emoji">🧧</span> <span id="encrypt-message-result">暂无结果</span>
         </div>
 
-        <!-- 解密部分 -->
         <h2>解密</h2>
         <form id="decrypt-form">
-            <label for="decrypt-message">请输入加密的文本:</label>
-            <input type="text" id="decrypt-message" name="message">
+            <label for="decrypt-message">请输入加密后的文本:</label>
+            <input type="text" id="decrypt-message" name="message" />
             <button type="submit">解密</button>
         </form>
-        <h3>解密结果:</h3>
-        <div class="result" id="decrypted-result">
-            <span class="emoji">😜</span> <span id="decrypt-message-result">解密结果</span>
+        <h3>解密结果</h3>
+        <div class="result decrypt" id="decrypted-result">
+            <span class="emoji">📜</span> <span id="decrypt-message-result">暂无结果</span>
         </div>
     </div>
 
     <script>
-        // 初始化粒子背景
         tsParticles.load("particles-js", {
             particles: {
                 number: {
-                    value: 100, // 粒子数量
-                    density: {
-                        enable: true,
-                        value_area: 800
-                    }
+                    value: 80,
+                    density: { enable: true, value_area: 800 }
                 },
                 shape: {
-                    type: "char", // 将粒子形状改为字符
+                    type: "char",
                     character: {
-                        value: ["汉", "字", "云", "安", "全","历","史","文","化","讠","刂","亻","廴","勹","冫","匚","卩","阝","丷","冖","厶"], // 替换成你想要的汉字
-                        font: "KaiTi", // 使用字体
+                        value: ["印", "章", "篆", "寿", "安", "福", "和", "吉", "雅", "承", "道", "脉"],
+                        font: "ZhuanTi",
                         style: "",
-                        weight: "bold" // 字重
+                        weight: "bold"
                     }
                 },
                 size: {
-                    value: 20, // 汉字大小
-                    random: true // 随机大小
+                    value: 22,
+                    random: true
                 },
                 opacity: {
-                    value: 0.8, // 汉字透明度
+                    value: 0.8,
                     random: true
                 },
                 color: {
-                    value: ["#1e3a8a", "#3b82f6", "#2563eb", "#1d4ed8"] // 蓝色系
+                    value: ["#b71c1c", "#d69b64", "#c43a2f"]
                 },
                 move: {
                     enable: true,
-                    speed: 3, // 运动速度
-                    direction: "none", // 运动方向
+                    speed: 2,
+                    direction: "none",
                     random: true,
                     straight: false,
-                    out_mode: "out", // 移出屏幕后重新出现
+                    out_mode: "out",
                     bounce: false
                 }
             },
             interactivity: {
                 events: {
-                    onhover: {
-                        enable: true,
-                        mode: "repulse" // 鼠标悬停时粒子会反向
-                    },
-                    onclick: {
-                        enable: true,
-                        mode: "push" // 鼠标点击时生成更多粒子
-                    }
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" }
                 }
             }
         });
 
-        // 加密和解密的偏移量（可以调整这个数值来改变加密效果）
         const OFFSET = 1000;
 
-        // 加密函数
         function encryptMessage(text) {
             return text.split('').map(char => {
-                let unicode = char.charCodeAt(0);  // 获取字符的 Unicode 编码
-                return String.fromCharCode(unicode + OFFSET);  // 偏移并转换为新的字符
+                let unicode = char.charCodeAt(0);
+                return String.fromCharCode(unicode + OFFSET);
             }).join('');
         }
 
-        // 解密函数
         function decryptMessage(encryptedText) {
             return encryptedText.split('').map(char => {
-                let unicode = char.charCodeAt(0);  // 获取字符的 Unicode 编码
-                return String.fromCharCode(unicode - OFFSET);  // 恢复原字符
+                let unicode = char.charCodeAt(0);
+                return String.fromCharCode(unicode - OFFSET);
             }).join('');
         }
 
-        // 加密表单提交
         document.getElementById('encrypt-form').addEventListener('submit', function (event) {
             event.preventDefault();
             let message = document.getElementById('encrypt-message').value;
             let encryptedMessage = encryptMessage(message);
-            document.getElementById('encrypted-result').innerHTML = `<span class="emoji">😁</span> ${encryptedMessage}`;
+            document.getElementById('encrypt-message-result').textContent = encryptedMessage;
         });
 
-        // 解密表单提交
         document.getElementById('decrypt-form').addEventListener('submit', function (event) {
             event.preventDefault();
             let encryptedMessage = document.getElementById('decrypt-message').value;
             let decryptedMessage = decryptMessage(encryptedMessage);
-            document.getElementById('decrypted-result').innerHTML = `<span class="emoji">😄</span> ${decryptedMessage}`;
+            document.getElementById('decrypt-message-result').textContent = decryptedMessage;
         });
     </script>
 </body>
